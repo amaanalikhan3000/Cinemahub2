@@ -3,13 +3,40 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "DEV-MAIN" ]
-  # (Remove pull_request if not needed)
+  # pull_request: # Uncomment if you want this workflow to run on pull requests
+  #   branches: [ "DEV-MAIN" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Define services required for the job, like a database.
+    # This will spin up a MySQL container accessible to your application.
+    services:
+      mysql:
+        image: mysql:8.0 # You can choose a specific version like mysql:5.7 or mysql:latest
+        env:
+          # These environment variables are for the MySQL container itself.
+          # They define the root password, the default database, and a user for your application.
+          # IMPORTANT: Use GitHub Secrets for sensitive values like passwords.
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }} # A strong root password for the MySQL container
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE_NAME }} # The name of the database your application expects
+          MYSQL_USER: ${{ secrets.MYSQL_USER }} # The username your application uses to connect
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # The password for the application user
+        ports:
+          # Map the container's MySQL port (3306) to the host's port (3306).
+          # This allows your application to connect to 'localhost:3306'.
+          - 3306:3306
+        options: >- # Health check to ensure MySQL is fully ready before the job proceeds
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }}"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
     env:
+      # These environment variables are passed to your Java application.
+      # Ensure your MYSQL_URL secret points to 'jdbc:mysql://localhost:3306/your_database_name?useSSL=false&serverTimezone=UTC'
+      # where 'your_database_name' matches the MYSQL_DATABASE_NAME secret above.
       SPRING_DATASOURCE_URL: ${{ secrets.MYSQL_URL }}
       SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USER }}
       SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
@@ -27,6 +54,23 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+
+    # Step to wait for the MySQL service to be fully ready.
+    # This helps prevent "Connection refused" errors due to race conditions.
+    - name: Wait for MySQL to be ready
+      run: |
+        echo "Waiting for MySQL to start..."
+        for i in $(seq 1 60); do
+          # Use netcat (nc) to check if port 3306 on localhost is open
+          if nc -z localhost 3306; then
+            echo "MySQL is ready after $i seconds!"
+            exit 0
+          fi
+          echo "Still waiting for MySQL... ($i/60)"
+          sleep 1
+        done
+        echo "MySQL did not become ready in time. Exiting."
+        exit 1
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
