@@ -20,7 +20,7 @@ jobs:
           # These environment variables are used by the MySQL container to initialize the database.
           # They create the specified database and user upon container startup.
           # IMPORTANT: Store these values as GitHub Secrets for security.
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }} # Root password for the MySQL server
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # Root password for the MySQL server
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE_NAME }} # The name of the database for your application
           MYSQL_USER: ${{ secrets.MYSQL_USER }} # The username your application will use to connect
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # The password for the application user
