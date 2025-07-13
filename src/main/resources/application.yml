@@ -4,8 +4,8 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    username: rockak387@gmail.com
-    password: "juaj ahpu cpvu wynm" # Make sure this is correctly quoted if there are spaces in the password
+    username:
+    password: ""
     properties:
       mail:
         smtp:
@@ -14,9 +14,9 @@ spring:
             enable: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/cinemahub4
-    username: root
-    password: root123
+    url:
+    username:
+    password:
 
   jpa:
     show-sql: true
@@ -26,13 +26,13 @@ spring:
 
 
 
-  #      ddl-auto=create:
+
   redis:
-    host: localhost
-    port: 6379
+    host:
+    port:
 
 
 logging:
   level:
-    root: INFO  # Default log level for all
-    com..example.cinemahub2: DEBUG  # Specific package (you can set your base package here)
+    root: INFO
+    com..example.cinemahub2: DEBUG
