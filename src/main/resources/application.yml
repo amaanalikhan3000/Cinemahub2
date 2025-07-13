@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: CinemaHub2
+
+  mail:
+    host: smtp.gmail.com
+    username:
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    url:
+    username:
+    password:
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+
+
+
+  redis:
+    host:
+    port:
+
+
+logging:
+  level:
+    root: INFO
+    com..example.cinemahub2: DEBUG
