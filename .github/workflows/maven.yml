@@ -29,11 +29,10 @@ jobs:
           # This allows your Spring Boot application to connect to 'localhost:3306'.
           - 3306:3306
         options: >- # Health check to ensure MySQL is fully ready before the job proceeds.
-          # This command uses the environment variables defined above within the service's context.
           --health-cmd "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD}"
-          --health-interval 10s # Check every 10 seconds
-          --health-timeout 5s   # Timeout if health check takes longer than 5 seconds
-          --health-retries 10   # Retry 10 times before marking as unhealthy
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
 
     # Environment variables to be passed to your Java application during the build and test steps.
     # These override any values in application.properties/yml during the workflow run.
