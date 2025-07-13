@@ -11,6 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Grant necessary permissions for the job, especially for dependency graph submission
+    permissions:
+      contents: write       # Required for actions that write to the repository, like dependency submission
+      pull-requests: write  # Often useful for advanced security features, like Dependabot alerts
+
     # Define services required for the job. This will spin up a MySQL Docker container
     # that your application can connect to during the workflow execution.
     services:
@@ -20,19 +25,23 @@ jobs:
           # These environment variables are used by the MySQL container to initialize the database.
           # They create the specified database and user upon container startup.
           # IMPORTANT: Store these values as GitHub Secrets for security.
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # Root password for the MySQL server
+
+          # MYSQL_ROOT_PASSWORD should ideally be a separate secret.
+          # Ensure you have a secret named MYSQL_ROOT_PASSWORD in your repo settings.
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE_NAME }} # The name of the database for your application
-          MYSQL_USER: ${{ secrets.MYSQL_USER }} # The username your application will use to connect
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # The password for the application user
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}             # The username your application will use to connect
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}     # The password for the application user
         ports:
           # Map the container's MySQL port (3306) to the host's port (3306).
           # This allows your Spring Boot application to connect to 'localhost:3306'.
           - 3306:3306
         options: >- # Health check to ensure MySQL is fully ready before the job proceeds.
           --health-cmd "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD}"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
+          --health-interval 10s # Check every 10 seconds
+          --health-timeout 5s   # Timeout if health check takes longer than 5 seconds
+          --health-retries 10   # Retry 10 times before marking as unhealthy
 
     # Environment variables to be passed to your Java application during the build and test steps.
     # These override any values in application.properties/yml during the workflow run.
