@@ -10,8 +10,9 @@ import java.util.Optional;
 @Repository
 public interface userRepo extends JpaRepository<AppUser,Integer> {
 
-    // Custom query method based on email
-   // Optional<AppUser> findByEmail(String email);
 
-    AppUser findByEmail(String username);
+    Optional<AppUser> findByEmail(String email);
+
+//    Optional<AppUser> findByUserName(String username);
+
 }

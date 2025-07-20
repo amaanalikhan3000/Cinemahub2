@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.cinemahub2.repository.user.userRepo;
 import java.util.Arrays;
-
+import java.util.Optional;
 
 @Service
 public class userService {
@@ -31,7 +31,7 @@ public class userService {
     }
 
 
-    public AppUser findByEmail(String email) {
+    public Optional<AppUser> findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 }

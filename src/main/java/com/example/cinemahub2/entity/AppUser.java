@@ -1,7 +1,5 @@
 package com.example.cinemahub2.entity;
 
-
-
 import com.example.cinemahub2.configAndUtility.RolesConverter;
 import lombok.*;
 import javax.persistence.*;
@@ -12,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
+@ToString
 public class AppUser {
 
     @Id
@@ -19,13 +18,15 @@ public class AppUser {
     private Integer userId;
 
     private String userName;
+
     @Column(unique = true)
     private String email;
 
     private String password;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude // Exclude this collection from toString()
     private List<Ticket> tickets;
 
     @Column(name = "is_logged_in")
