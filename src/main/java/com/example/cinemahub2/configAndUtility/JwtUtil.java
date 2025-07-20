@@ -9,38 +9,6 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-//    private final String secret = "secret123";  // 🔒 Keep it safe in real apps
-//    private final long expirationMs = 1000 * 60 * 60;  // 1 hour
-//
-//    // ✅ Generate token
-//    public String generateToken(AppUser user) {
-//        return Jwts.builder()
-//                .setSubject(user.getEmail())
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-//                .signWith(SignatureAlgorithm.HS512, secret)
-//                .compact();
-//    }
-//
-//    // ✅ Extract username/email
-//    public String extractUsername(String token) {
-//        return Jwts.parser()
-//                .setSigningKey(secret)
-//                .parseClaimsJws(token)
-//                .getBody()
-//                .getSubject();
-//    }
-//
-//    // ✅ Validate token
-//    public boolean validateToken(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-
 
         private final String SECRET_KEY = "secret";
 

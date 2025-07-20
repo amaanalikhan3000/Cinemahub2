@@ -11,13 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -36,79 +39,31 @@ public class Login {
 
     private static final Logger logger = LoggerFactory.getLogger(Login.class);
 
-//    @PostMapping("/createAccount")
-//    public ResponseEntity<?> createUser(@RequestBody AppUser user) {
-//        userService.saveNewUser(user);
-//        return new ResponseEntity<>("Account created ", HttpStatus.CREATED);
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUser user) {
-//        String emailInReq = user.getEmail();
-//        String passwordInReq = user.getPassword();
-//
-//        AppUser optionalUser = userService.findByEmail(emailInReq);
-//
-//        if (!(optionalUser.getEmail().equals(emailInReq))) {
-//            logger.warn("Login failed: Email not registered - {}", emailInReq);
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                    .body("Email not registered");
-//            }
-//
-//            //  AppUser userInDb = optionalUser.get);
-//
-//            if (!passwordEncoder.matches(passwordInReq, optionalUser.getPassword())) {
-//                logger.warn("Login failed: Incorrect password for email - {}", emailInReq);
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                        .body("Incorrect password");
-//            }
-//
-//            // Update fetched entity
-//            optionalUser.setLoggedIn(true);
-//
-//            // optionalUser.updateUser(userInDb);
-//            // save the DB-managed object
-//            userService.updateUser(optionalUser);
-//
-//
-//            return new ResponseEntity<>("Login successful", HttpStatus.ACCEPTED);
 
         String emailInReq = user.getEmail();
         String passwordInReq = user.getPassword();
 
-        AppUser optionalUser = userService.findByEmail(emailInReq);
+        Optional<AppUser> optionalUser = userService.findByEmail(emailInReq);
+        AppUser user2 = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + optionalUser));
 
-        if (!(optionalUser.getEmail().equals(emailInReq))) {
+
+        if (!(user2.getEmail().equals(emailInReq))) {
             logger.warn("Login failed: Email not registered - {}", emailInReq);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Email not registered");
         }
 
 
-        if (!passwordEncoder.matches(passwordInReq, optionalUser.getPassword())) {
+        if (!passwordEncoder.matches(passwordInReq, user2.getPassword())) {
             logger.warn("Login failed: Incorrect password for email - {}", emailInReq);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Incorrect password");
         }
 
 
-//        try {
-//            // Authenticate user
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-//            );
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//        }
-//
-//        final AppUser appUser = userService.findByEmail(user.getEmail());
-//
-//        // Generate token
-//      //  final String jwt = jwtUtil.generateToken(appUser);
-//
-//        // Return the token
-//      //  return ResponseEntity.ok(jwt);
-//        return new ResponseEntity<>("Login successful", HttpStatus.ACCEPTED);
 
 
         try {
@@ -116,11 +71,22 @@ public class Login {
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
             );
 
-        //    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            AppUser appUser = userService.findByEmail(user.getEmail());
-            String token = jwtUtil.generateToken(appUser);
 
-            return ResponseEntity.ok(new LoginResponse(token));
+           Optional<AppUser>  optionalAppUser =userService.findByEmail(user.getEmail());
+            AppUser appUser2 = optionalAppUser.orElseThrow(() ->
+                    new RuntimeException("User not found with email: " + user.getEmail()) // Or a custom UserNotFoundException
+            );
+            String token = jwtUtil.generateToken(appUser2);
+
+            // Update fetched entity
+            appUser2.setLoggedIn(true);
+
+            userService.updateUser(appUser2);
+
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Login successful");
+            responseBody.put("data", new LoginResponse(token));
+            return new ResponseEntity<>(responseBody, HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }

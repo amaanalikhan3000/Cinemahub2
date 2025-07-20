@@ -8,21 +8,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import com.example.cinemahub2.repository.user.userRepo;
-
 import java.util.Optional;
 
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-//    @Autowired
-//    private userRepo userRepo;
+
     @Autowired
     private userRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepo.findByEmail(username);
+
+        Optional<AppUser> optUser = userRepo.findByEmail(username);
+        AppUser user = optUser.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + optUser));
+
 
         if(user!=null){
             return org.springframework.security.core.userdetails.User.builder()
