@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/user/login", "/create").permitAll() // ✅ Allow public access
-                .antMatchers("/nowShowingMovie/**", "/movies/**", "/seats/**", "/bookings/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/nowShowingMovie/**", "/movies/**", "/seats/**", "/bookings/**","/api/otp/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

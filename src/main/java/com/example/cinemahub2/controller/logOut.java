@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @RestController
@@ -17,13 +16,15 @@ public class logOut {
     @PutMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody AppUser user) {
         String emailInReq = user.getEmail();
-        AppUser optionalUser = userService.findByEmail(emailInReq);
+        Optional<AppUser> optionalUser = userService.findByEmail(emailInReq);
+        AppUser appUser = optionalUser.orElseThrow(() ->
+                new RuntimeException("User not found with email: " + user.getEmail())
+        );
 
-//        AppUser userInDb = optionalUser.get();
 
         // Update fetched entity
-        optionalUser.setLoggedIn(false);
-        userService.updateUser(optionalUser); // save the DB-managed object
+        appUser.setLoggedIn(false);
+        userService.updateUser(appUser); // save the DB-managed object
 
         return new ResponseEntity<>("Successfully Logged out", HttpStatus.ACCEPTED);
     }
