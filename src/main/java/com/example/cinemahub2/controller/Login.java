@@ -46,6 +46,7 @@ public class Login {
         String emailInReq = user.getEmail();
         String passwordInReq = user.getPassword();
 
+
         Optional<AppUser> optionalUser = userService.findByEmail(emailInReq);
         AppUser user2 = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + optionalUser));
 
