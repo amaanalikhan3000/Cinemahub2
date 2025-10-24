@@ -1,6 +1,7 @@
 package com.example.cinemahub2.services;
 
 
+import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
 import com.example.cinemahub2.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
         }
-        throw new UsernameNotFoundException("User not found with username: "+ username);
+        throw new UserNotFoundException("User not found with username: "+ username);
     }
 }

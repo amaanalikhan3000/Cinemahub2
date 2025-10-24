@@ -1,5 +1,6 @@
 package com.example.cinemahub2.controller;
 
+import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
 import com.example.cinemahub2.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class logOut {
         String emailInReq = user.getEmail();
         Optional<AppUser> optionalUser = userService.findByEmail(emailInReq);
         AppUser appUser = optionalUser.orElseThrow(() ->
-                new RuntimeException("User not found with email: " + user.getEmail())
+                new UserNotFoundException("User not found with email: " + user.getEmail())
         );
 
 
