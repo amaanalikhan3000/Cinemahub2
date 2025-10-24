@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     //Creation of UserNotFoundException to handle user's email not found
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlerUserNotFoundException(UserNotFoundException message,
-                                                               WebRequest request){
+                                                                      WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         ErrorResponse error = new ErrorResponse(
@@ -35,9 +35,10 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
 
-       return new ResponseEntity<>(error, status);
+        return new ResponseEntity<>(error, status);
     }
 
+    //Creation of BookingConflictException to handle conflicts
     @ExceptionHandler(BookingConflictException.class)
     public ResponseEntity<ErrorResponse> handlerBookingConflictException(BookingConflictException message,
                                                                          WebRequest request) {
@@ -48,9 +49,10 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
 
-        return new ResponseEntity<>(error,status);
+        return new ResponseEntity<>(error, status);
     }
 
+    //Creation of BookingConflictException to handle unauthorized users
     @ExceptionHandler(UserNotAuthorizedException.class)
     public ResponseEntity<ErrorResponse> handlerUserNotAuthorizedException(UserNotAuthorizedException message,
                                                                            WebRequest request) {
@@ -62,10 +64,11 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
 
-        return new ResponseEntity<>(error,status);
+        return new ResponseEntity<>(error, status);
 
     }
 
+    //Creation of BookingConflictException to handle invalid requests
     @ExceptionHandler(InvalidRequestException.class)
     public ResponseEntity<ErrorResponse> handlerInvalidRequestException(InvalidRequestException message,
                                                                         WebRequest request){
@@ -81,6 +84,7 @@ public class GlobalExceptionHandler {
 
     }
 
+    //Creation of BookingConflictException to handle resources not found, e.g: movie not found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlerInvalidRequestException(ResourceNotFoundException message,
                                                                         WebRequest request){
@@ -96,6 +100,7 @@ public class GlobalExceptionHandler {
 
     }
 
+    //Creation of BookingConflictException to handle server errors
     @ExceptionHandler(InternalServerException.class)
     public ResponseEntity<ErrorResponse> handlerInvalidRequestException(InternalServerException message,
                                                                         WebRequest request){

@@ -30,7 +30,7 @@ public class nowShowing {
         if (!titles.isEmpty()) {
             return new ResponseEntity<>(titles, HttpStatus.OK);
         } else {
-            throw new ResourceNotFoundException("");
+            throw new ResourceNotFoundException("No top movie titles were found in the database.");
         }
     }
 

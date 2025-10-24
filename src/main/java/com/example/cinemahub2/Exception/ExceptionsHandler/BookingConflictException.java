@@ -7,7 +7,7 @@ public class BookingConflictException extends RuntimeException {
     }
 
     public BookingConflictException(String message, Throwable cause) {
-        super(message, cause); // Llama al constructor de RuntimeException con la causa
+        super(message, cause);
     }
 
 }
