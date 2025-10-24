@@ -4,6 +4,8 @@ package com.example.cinemahub2.services;
 import com.example.cinemahub2.DTO.MovieTitleDTO;
 import com.example.cinemahub2.DTO.MovieWithShowsDTO;
 import com.example.cinemahub2.DTO.ShowInfoDTO;
+import com.example.cinemahub2.Exception.ExceptionsHandler.InvalidRequestException;
+import com.example.cinemahub2.Exception.ExceptionsHandler.ResourceNotFoundException;
 import com.example.cinemahub2.entity.Movie;
 import com.example.cinemahub2.repository.user.MovieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,6 @@ public class MovieService {
     @Autowired
     private MovieRepo movieRepo;
 
-
-
-
     public List<MovieTitleDTO> getTop5MovieTitles() {
 
         List<Movie> topMovies = movieRepo.findTop5ByOrderByMovieIdDesc();
@@ -39,7 +38,7 @@ public class MovieService {
         Optional<Movie> movieOptional = movieRepo.findByMovieName(movieName);
 
         if (movieOptional.isEmpty()) {
-            throw new RuntimeException("Movie not found: " + movieName);
+            throw new ResourceNotFoundException("Movie not found: " + movieName);
         }
 
         Movie movie = movieOptional.get();

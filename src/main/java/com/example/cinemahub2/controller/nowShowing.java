@@ -1,6 +1,7 @@
 package com.example.cinemahub2.controller;
 
 import com.example.cinemahub2.DTO.MovieTitleDTO;
+import com.example.cinemahub2.Exception.ExceptionsHandler.ResourceNotFoundException;
 import com.example.cinemahub2.entity.Movie;
 import com.example.cinemahub2.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class nowShowing {
         if (!titles.isEmpty()) {
             return new ResponseEntity<>(titles, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("No top movie titles were found in the database.");
         }
     }
 

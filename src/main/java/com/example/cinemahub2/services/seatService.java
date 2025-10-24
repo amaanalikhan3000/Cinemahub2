@@ -3,6 +3,7 @@ package com.example.cinemahub2.services;
 
 import com.example.cinemahub2.DTO.BookingDetailResponseDto;
 import com.example.cinemahub2.DTO.SeatAvailabilityDTO;
+import com.example.cinemahub2.Exception.ExceptionsHandler.*;
 import com.example.cinemahub2.entity.*;
 import com.example.cinemahub2.repository.user.MovieShowRepo;
 import com.example.cinemahub2.repository.user.SeatRepository;
@@ -16,6 +17,7 @@ import com.example.cinemahub2.repository.user.userRepo;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,19 +89,19 @@ public class seatService {
     @Transactional
     public BookingDetailResponseDto bookSeats(Integer showId, List<String> seatNumbers, String userId) {
         MovieShow show = movieShowRepo.findById(showId)
-                .orElseThrow(() -> new RuntimeException("Show not found with ID: " + showId));
+                .orElseThrow(() -> new ResourceNotFoundException("Show not found with ID: " + showId));
 
         AppUser appUser = userRepo.findByEmail(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         logger.info("Attempting to book seats {} for show ID: {} by user ID: {}", seatNumbers, showId, userId);
 
-        List<Ticket> ticketsToBook = new ArrayList<>();
+        LinkedList<Ticket> ticketsToBook = new LinkedList<>();
 
         for (String seatNumber : seatNumbers) {
             if (ticketRepo.findByShow_ShowIdAndSeatNumber(showId, seatNumber).isPresent()) {
                 logger.warn("Seat '{}' for show '{}' is already booked (pre-check). Rolling back transaction.", seatNumber, showId);
-                throw new RuntimeException("Seat " + seatNumber + " for show " + showId + " is already booked. Please choose another.");
+                throw new InvalidRequestException("Seat " + seatNumber + " for show " + showId + " is already booked. Please choose another.");
             }
 
             Ticket ticket = new Ticket();
@@ -121,10 +123,10 @@ public class seatService {
 
         } catch (DataIntegrityViolationException e) {
             logger.error("Failed to book seats for show {} due to concurrent booking (DataIntegrityViolation): {}", showId, e.getMessage());
-            throw new RuntimeException("One or more selected seats were just booked by someone else. Please review your selection and try again.", e);
+            throw new BookingConflictException("One or more selected seats were just booked by someone else. Please review your selection and try again.", e);
         } catch (Exception e) {
             logger.error("An unexpected error occurred during seat booking for show {}: {}", showId, e.getMessage());
-            throw new RuntimeException("An unexpected error occurred during booking. Please try again.", e);
+            throw new InternalServerException("An unexpected error occurred during booking. Please try again.", e);
         }
     }
 

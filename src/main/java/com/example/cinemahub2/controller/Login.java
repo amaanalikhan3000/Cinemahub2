@@ -1,6 +1,8 @@
 package com.example.cinemahub2.controller;
 
 import com.example.cinemahub2.DTO.LoginResponse;
+import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotAuthorizedException;
+import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
 import com.example.cinemahub2.configAndUtility.JwtUtil;
 import com.example.cinemahub2.entity.AppUser;
 import org.slf4j.Logger;
@@ -11,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,26 +47,13 @@ public class Login {
         String emailInReq = user.getEmail();
         String passwordInReq = user.getPassword();
 
-
         Optional<AppUser> optionalUser = userService.findByEmail(emailInReq);
-        AppUser user2 = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + optionalUser));
-
-
-        if (!(user2.getEmail().equals(emailInReq))) {
-            logger.warn("Login failed: Email not registered - {}", emailInReq);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Email not registered");
-        }
-
+        AppUser user2 = optionalUser.orElseThrow(() -> new UserNotFoundException("User not found with email: " + emailInReq));
 
         if (!passwordEncoder.matches(passwordInReq, user2.getPassword())) {
             logger.warn("Login failed: Incorrect password for email - {}", emailInReq);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Incorrect password");
+            throw new UserNotAuthorizedException("Incorrect password");
         }
-
-
-
 
         try {
             Authentication authentication = authManager.authenticate(
@@ -75,7 +63,7 @@ public class Login {
 
            Optional<AppUser>  optionalAppUser =userService.findByEmail(user.getEmail());
             AppUser appUser2 = optionalAppUser.orElseThrow(() ->
-                    new RuntimeException("User not found with email: " + user.getEmail()) // Or a custom UserNotFoundException
+                    new UserNotFoundException("User not found with email: " + user.getEmail()) // Or a custom UserNotFoundException
             );
             String token = jwtUtil.generateToken(appUser2);
 
@@ -88,8 +76,8 @@ public class Login {
             responseBody.put("message", "Login successful");
             responseBody.put("data", new LoginResponse(token));
             return new ResponseEntity<>(responseBody, HttpStatus.ACCEPTED);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        } catch (UserNotFoundException ex) {
+            throw new UserNotAuthorizedException("Invalid credentials");
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.cinemahub2.services;
 
 
 import com.example.cinemahub2.DTO.TicketDetailsDTO;
+import com.example.cinemahub2.Exception.ExceptionsHandler.BookingConflictException;
 import com.example.cinemahub2.entity.Movie;
 import com.example.cinemahub2.entity.MovieShow;
 import com.example.cinemahub2.entity.Theater;
@@ -21,11 +22,9 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-
-
     public Optional<TicketDetailsDTO> findLatestTicketForUser(Integer userId) {
         List<Ticket> tickets = ticketRepository.findLatestTicketByUserId(userId);
-        if (tickets.isEmpty()) return Optional.empty();
+        if (tickets.isEmpty()) throw new BookingConflictException("There is no tickets in that moment");
 
         Ticket ticket = tickets.get(0);
         TicketDetailsDTO dto = new TicketDetailsDTO();
