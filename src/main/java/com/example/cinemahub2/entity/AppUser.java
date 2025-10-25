@@ -17,17 +17,8 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
-
     private String userName;
-
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Invalid email")
-    @Column(unique = true)
     private String email;
-
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
-            message = "Password must be 8+ characters, include upper & lower case letters, a number, and a special character"
-    )
     private String password;
     private String phoneNumber;
 
