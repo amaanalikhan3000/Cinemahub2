@@ -1,7 +1,6 @@
 package com.example.cinemahub2.controller;
 
 import com.example.cinemahub2.DTO.LoginResponse;
-
 import com.example.cinemahub2.model.AppUser;
 import com.example.cinemahub2.services.userService;
 import com.example.cinemahub2.util.JwtUtil;
@@ -13,10 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -28,6 +25,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/user")
 public class Login {
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
@@ -37,17 +35,15 @@ public class Login {
     private AuthenticationManager authManager;
 
     @Autowired
-    private com.example.cinemahub2.services.userService userService;
+    private userService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(Login.class);
-
+    private static final Logger logger = Logger.getLogger(Login.class.getName());
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUser user) {
 
         String emailInReq = user.getEmail();
         String passwordInReq = user.getPassword();
-
 
         logger.info("Login attempt for email: " + emailInReq);
 
@@ -61,11 +57,10 @@ public class Login {
         // Verify password
         if (!passwordEncoder.matches(passwordInReq, existingUser.getPassword())) {
             logger.warning("Login failed: Incorrect password for email - " + emailInReq);
-
+            throw new UserNotAuthorizedException("Incorrect password");
         }
 
         try {
-
             // Authenticate using Spring Security
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(emailInReq, passwordInReq)
