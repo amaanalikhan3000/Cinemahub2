@@ -2,10 +2,10 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "DEV-MAIN" ]
+    branches: [ "login-clean" ]
   # Uncomment the pull_request block if you want this workflow to run on pull requests as well.
   # pull_request:
-  #   branches: [ "DEV-MAIN" ]
+  #   branches: [ "login-clean" ]
 
 jobs:
   build:
