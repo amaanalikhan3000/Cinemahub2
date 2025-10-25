@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking - Cinemahub</title>
+</head>
+<body>
+    <h1>Book a Movie</h1>
+    <form id="bookingForm">
+        <input type="text" id="movieId" placeholder="Movie ID" required><br>
+        <input type="number" id="seats" placeholder="Seats" required><br>
+        <button type="submit">Book</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('bookingForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const movieId = document.getElementById('movieId').value;
+            const seats = document.getElementById('seats').value;
+
+            fetch('http://localhost:8080/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ movieId, seats })
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>

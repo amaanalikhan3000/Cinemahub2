@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies - Cinemahub</title>
+</head>
+<body>
+    <h1>Movies Listing</h1>
+    <ul id="moviesList"></ul>
+
+    <script>
+        fetch('http://localhost:8080/movies')
+        .then(res => res.json())
+        .then(movies => {
+            const list = document.getElementById('moviesList');
+            movies.forEach(movie => {
+                const li = document.createElement('li');
+                li.textContent = movie.title + " (" + movie.genre + ")";
+                list.appendChild(li);
+            });
+        })
+        .catch(err => console.error(err));
+    </script>
+</body>
+</html>
