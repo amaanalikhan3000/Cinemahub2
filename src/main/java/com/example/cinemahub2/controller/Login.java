@@ -5,8 +5,8 @@ import com.example.cinemahub2.utils.ValidationUtil;
 //import com.example.cinemahub2.model.AppUser;
 import com.example.cinemahub2.entity.AppUser;
 import com.example.cinemahub2.services.userService;
-import com.example.cinemahub2.exception.UserNotFoundException;
-import com.example.cinemahub2.exception.UserNotAuthorizedException;
+import com.example.cinemahub2.exception.ExceptionsHandler.UserNotFoundException;
+import com.example.cinemahub2.exception.ExceptionsHandler.UserNotAuthorizedException;
 import com.example.cinemahub2.configAndUtility.JwtUtil;
 //import com.example.cinemahub2.security.JwtUtil;
 
