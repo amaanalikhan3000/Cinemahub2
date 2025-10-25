@@ -1,23 +1,22 @@
 package com.example.cinemahub2.controller;
 
 import com.example.cinemahub2.DTO.LoginResponse;
-
-import com.example.cinemahub2.model.AppUser;
-import com.example.cinemahub2.services.userService;
-import com.example.cinemahub2.util.JwtUtil;
 import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotAuthorizedException;
 import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
-
+import com.example.cinemahub2.configAndUtility.JwtUtil;
+import com.example.cinemahub2.entity.AppUser;
+import com.example.cinemahub2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +36,9 @@ public class Login {
     private AuthenticationManager authManager;
 
     @Autowired
-    private com.example.cinemahub2.services.userService userService;
+    private UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(Login.class);
+    private static final Logger logger = Logger.getLogger(Login.class.getName());
 
 
     @PostMapping("/login")

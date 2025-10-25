@@ -1,7 +1,7 @@
 package com.example.cinemahub2.services;
 
 import com.example.cinemahub2.entity.AppUser;
-import com.example.cinemahub2.repository.user.userRepo;
+import com.example.cinemahub2.repository.user.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private userRepo userRepository;
+    private UserRepo userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

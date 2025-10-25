@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.example.cinemahub2.repository.user.userRepo;
+import com.example.cinemahub2.repository.user.UserRepo;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class ticketController {
 
 
     @Autowired
-    private userRepo userRepo;
+    private UserRepo userRepo;
 
     @GetMapping("/viewTicket")
     public ResponseEntity<?> viewLatestTicket() {

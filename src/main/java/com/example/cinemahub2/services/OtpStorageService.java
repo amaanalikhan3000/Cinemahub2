@@ -7,6 +7,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
 
+import static java.util.Optional.ofNullable;
+
 
 @Service
 public class OtpStorageService {
@@ -21,8 +23,9 @@ public class OtpStorageService {
     }
 
     public String getOtp(String key) {
-        Object otp = redisTemplate.opsForValue().get(OTP_PREFIX + key);
-        return otp != null ? otp.toString() : null;
+        return ofNullable(redisTemplate.opsForValue().get(OTP_PREFIX + key))
+                .map(Object::toString)
+                .orElse(null);
     }
 
     public void deleteOtp(String key) {

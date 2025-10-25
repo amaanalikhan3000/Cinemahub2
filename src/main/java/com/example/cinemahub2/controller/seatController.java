@@ -3,7 +3,7 @@ package com.example.cinemahub2.controller;
 import com.example.cinemahub2.DTO.BookingDetailResponseDto;
 import com.example.cinemahub2.DTO.BookingRequestDTO;
 import com.example.cinemahub2.DTO.SeatAvailabilityDTO;
-import com.example.cinemahub2.services.seatService;
+import com.example.cinemahub2.services.SeatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class seatController {
 
 
     @Autowired
-    private seatService seatService;
+    private SeatService seatService;
     private static final Logger logger = LoggerFactory.getLogger(seatController.class);
 
     @GetMapping("/{showId}/seats")
