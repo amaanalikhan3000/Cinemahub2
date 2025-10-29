@@ -1,5 +1,6 @@
 package com.example.cinemahub2.services;
 
+import com.example.cinemahub2.DTO.CreateUserDTO;
 import com.example.cinemahub2.entity.AppUser;
 import com.example.cinemahub2.repository.user.UserRepo;
 import org.junit.jupiter.api.Test;
@@ -34,12 +35,13 @@ class UserServiceTest {
     @Test
     void testSaveNewUser() {
         // arrange
-        AppUser input = new AppUser();
-        input.setPassword("password");
+
+        CreateUserDTO createUserDTO = new CreateUserDTO();
+        createUserDTO.setPassword("password");
 
 
         // act
-        AppUser user = userService.saveNewUser(input);
+        AppUser user = userService.saveNewUser(createUserDTO);
 
         // assert
         assertThat(user.getPassword()).isNotNull();

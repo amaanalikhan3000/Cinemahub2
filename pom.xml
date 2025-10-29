@@ -107,6 +107,12 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.15</version> <!-- Compatible with Spring Boot 2.7.x (uses javax.servlet) -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -136,3 +142,5 @@
 	</build>
 
 </project>
+
+

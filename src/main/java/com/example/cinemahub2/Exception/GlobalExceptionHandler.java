@@ -32,6 +32,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                404,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
@@ -46,6 +48,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                409,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
@@ -61,6 +65,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                403,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
@@ -77,6 +83,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                400,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
@@ -93,6 +101,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                404,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
@@ -109,6 +119,8 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 message.getMessage(),
+                500,
+                status.getReasonPhrase(),
                 request.getDescription(false)
         );
 
