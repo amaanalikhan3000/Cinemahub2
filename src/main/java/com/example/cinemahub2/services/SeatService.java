@@ -13,17 +13,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import com.example.cinemahub2.repository.user.userRepo;
+import com.example.cinemahub2.repository.user.UserRepo;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class seatService {
+public class SeatService {
 
     @Autowired
     private MovieShowRepo movieShowRepo;
@@ -33,13 +32,13 @@ public class seatService {
     private SeatRepository seatRepo;
 
     @Autowired
-    private userRepo userRepo;
+    private UserRepo userRepo;
 
 
     @Autowired
     private TicketRepository ticketRepo;
 
-    private static final Logger logger = LoggerFactory.getLogger(seatService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SeatService.class);
 
     public List<SeatAvailabilityDTO> getAvailableSeatsForShow(Integer showId) {
         MovieShow show = movieShowRepo.findById(showId)

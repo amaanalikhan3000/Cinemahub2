@@ -2,6 +2,7 @@ package com.example.cinemahub2.controller;
 
 import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
 import com.example.cinemahub2.entity.AppUser;
+import com.example.cinemahub2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class logOut {
     @Autowired
-    private com.example.cinemahub2.services.userService userService;
+    private UserService userService;
 
     @PutMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody AppUser user) {

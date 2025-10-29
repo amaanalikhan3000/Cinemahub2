@@ -5,6 +5,7 @@ import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotAuthorizedExcep
 import com.example.cinemahub2.Exception.ExceptionsHandler.UserNotFoundException;
 import com.example.cinemahub2.configAndUtility.JwtUtil;
 import com.example.cinemahub2.entity.AppUser;
+import com.example.cinemahub2.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +38,7 @@ public class Login {
     private AuthenticationManager authManager;
 
     @Autowired
-    private com.example.cinemahub2.services.userService userService;
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(Login.class);
 

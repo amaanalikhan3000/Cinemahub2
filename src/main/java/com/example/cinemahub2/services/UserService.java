@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.cinemahub2.repository.user.userRepo;
+import com.example.cinemahub2.repository.user.UserRepo;
 import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class userService {
+public class UserService {
 
     @Autowired
-    private userRepo userRepo;
+    private UserRepo userRepo;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

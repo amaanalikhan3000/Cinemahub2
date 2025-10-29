@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.cinemahub2.services.userService;
+import com.example.cinemahub2.services.UserService;
 
 import javax.validation.Valid;
 
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 public class createAccount {
 
     @Autowired
-    private userService userService;
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserDTO user) {
