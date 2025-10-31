@@ -4,7 +4,6 @@ package com.example.cinemahub2.services;
 import com.example.cinemahub2.DTO.MovieTitleDTO;
 import com.example.cinemahub2.DTO.MovieWithShowsDTO;
 import com.example.cinemahub2.DTO.ShowInfoDTO;
-import com.example.cinemahub2.Exception.ExceptionsHandler.InvalidRequestException;
 import com.example.cinemahub2.Exception.ExceptionsHandler.ResourceNotFoundException;
 import com.example.cinemahub2.entity.Movie;
 import com.example.cinemahub2.repository.user.MovieRepo;
@@ -44,6 +43,7 @@ public class MovieService {
 
         List<ShowInfoDTO> showInfos = movie.getShows().stream()
                 .map(show -> new ShowInfoDTO(
+                        show.getShowId(),
                         show.getTheater().getTheaterName(),
                         show.getShowTime().toLocalDate(),
                         show.getShowTime().toLocalTime()

@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 public class ShowInfoDTO {
+    private Integer showId;
     private String theaterName;
     private LocalDate showDate;
     private LocalTime showTime;

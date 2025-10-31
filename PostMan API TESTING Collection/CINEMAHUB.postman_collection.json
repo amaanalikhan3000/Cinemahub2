@@ -1,0 +1,583 @@
+{
+	"info": {
+		"_postman_id": "150d5417-e973-4b88-af80-89e4387e580e",
+		"name": "CINEMAHUB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31248248"
+	},
+	"item": [
+		{
+			"name": "User Success API Cases",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 - User created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Response message confirms account creation\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Account created\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{userName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"role\": \"USER\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"if (responseData.data && responseData.data.token) {\r",
+									"    pm.environment.set(\"authToken\", responseData.data.token);\r",
+									"} else {\r",
+									"    console.log(\"No token found in response\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status is 202 - Login successful\", function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login message confirmed\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res.message).to.eql(\"Login successful\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Failure API Cases",
+			"item": []
+		},
+		{
+			"name": "Movies Controller APIs Success Cases",
+			"item": [
+				{
+					"name": "Get Movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"if (response.shows && response.shows.length > 0) {\r",
+									"    let showId = response.shows[0].showId;\r",
+									"    pm.environment.set(\"showId\", showId);\r",
+									"} else {\r",
+									"    console.log(\" No shows found in response\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200 - Movie with shows fetched successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has correct structure for movie and shows\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property(\"movieName\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genre\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"duration\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"shows\").that.is.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each show has valid show details\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.shows.forEach(show => {\r",
+									"        pm.expect(show).to.have.property(\"showId\").that.is.a(\"number\");\r",
+									"        pm.expect(show).to.have.property(\"theaterName\").that.is.a(\"string\");\r",
+									"        pm.expect(show).to.have.property(\"showDate\").that.is.a(\"string\");\r",
+									"        pm.expect(show).to.have.property(\"showTime\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/movies/{{movieName }}/shows",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movies",
+								"{{movieName }}",
+								"shows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top 5 titles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 - Top 5 titles fetched\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be an array of movies\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each movie should have movieName and movieId\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(movie => {\r",
+									"        pm.expect(movie).to.have.property(\"movieName\");\r",
+									"        pm.expect(movie.movieName).to.be.a(\"string\").that.is.not.empty;\r",
+									"\r",
+									"        pm.expect(movie).to.have.property(\"movieId\");\r",
+									"        pm.expect(movie.movieId).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Should return at most 5 movies\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.most(5);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/nowShowingMovie/top5titles",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"nowShowingMovie",
+								"top5titles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Seat Controller Success API Cases",
+			"item": [
+				{
+					"name": "Book Seats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 - Seats booked successfully\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has booking details and structure\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property(\"schedule\");\r",
+									"    pm.expect(jsonData).to.have.property(\"transactionDetail\");\r",
+									"    pm.expect(jsonData).to.have.property(\"cancellationPolicy\");\r",
+									"\r",
+									"    // Schedule validations\r",
+									"    const schedule = jsonData.schedule;\r",
+									"    pm.expect(schedule).to.have.property(\"movieTitle\").that.is.a(\"string\");\r",
+									"    pm.expect(schedule).to.have.property(\"date\").that.is.a(\"string\");\r",
+									"    pm.expect(schedule).to.have.property(\"tickets\").that.is.a(\"string\");\r",
+									"    pm.expect(schedule).to.have.property(\"hours\").that.is.a(\"string\");\r",
+									"\r",
+									"    // Transaction detail validations\r",
+									"    const transaction = jsonData.transactionDetail;\r",
+									"    pm.expect(transaction).to.have.property(\"regularSeatPrice\").that.is.a(\"number\");\r",
+									"    pm.expect(transaction).to.have.property(\"numberOfTickets\").that.is.a(\"number\");\r",
+									"    pm.expect(transaction).to.have.property(\"serviceChargePerTicket\").that.is.a(\"number\");\r",
+									"    pm.expect(transaction).to.have.property(\"totalPayment\").that.is.a(\"number\");\r",
+									"\r",
+									"    // Cancellation policy check\r",
+									"    pm.expect(jsonData.cancellationPolicy).to.include(\"No cancellation\");\r",
+									"});\r",
+									" "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"showId\": {{showId}},\r\n  \"seatNumbers\": [\"B5\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/bookings/book-seats",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"bookings",
+								"book-seats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movie Controller API failure Cases",
+			"item": []
+		},
+		{
+			"name": "Seat Controller Failure Cases",
+			"item": []
+		},
+		{
+			"name": "Otp Controller API Success Cases",
+			"item": [
+				{
+					"name": "Send OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 - OTP sent successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response confirms OTP sent to email\", function () {\r",
+									"    const responseText = pm.response.text();\r",
+									"    const email = pm.variables.replaceIn(\"{{email}}\"); // ✅ correctly fetch variable\r",
+									"    pm.expect(responseText).to.include(\"OTP sent to email:\");\r",
+									"    pm.expect(responseText).to.include(email);\r",
+									"});\r",
+									" "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/otp/sendOtp",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"otp",
+								"sendOtp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Otp Controller API Failure Cases",
+			"item": []
+		},
+		{
+			"name": "Ticket Controller API Success Cases",
+			"item": [
+				{
+					"name": "View Ticket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 - Ticket retrieved successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains expected ticket details\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property(\"bookingTime\");\r",
+									"    pm.expect(jsonData).to.have.property(\"seatNumber\");\r",
+									"    pm.expect(jsonData).to.have.property(\"price\");\r",
+									"    pm.expect(jsonData).to.have.property(\"showTime\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property(\"movie\");\r",
+									"    pm.expect(jsonData.movie).to.have.property(\"title\", \"dunki\");\r",
+									"    pm.expect(jsonData.movie).to.have.property(\"duration\", \"3h 00m\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property(\"theater\");\r",
+									"    pm.expect(jsonData.theater).to.have.property(\"name\", \"pvr\");\r",
+									"    pm.expect(jsonData.theater).to.have.property(\"location\", \"mysuru\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/ticket/viewTicket",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"ticket",
+								"viewTicket"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logout API Success Cases",
+			"item": [
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 202 - Logout successful\", function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"    pm.expect(pm.response.text()).to.include(\"Successfully Logged out\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n\"email\": \"{{email}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Log Out only after validating all login-required APIs"
+		},
+		{
+			"name": "Logout API Failure Cases",
+			"item": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
