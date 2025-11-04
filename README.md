@@ -160,41 +160,6 @@ Run with coverage:
 mvn clean test jacoco:report
 ```
 
----
-
-## 🎯 Open Issues & Good First Issues
-
-We have several areas where you can contribute:
-
-### 🌟 Good First Issues (Beginner-Friendly)
-- [ ] Add input validation for all API endpoints
-- [ ] Write unit tests for service layer
-- [ ] Improve API documentation with examples
-- [ ] Add logging for all major operations
-- [ ] Create Postman collection for API testing
-
-### 🔨 Feature Requests
-- [ ] Payment gateway integration (Stripe / Razorpay)
-- [ ] Role-based access control (Admin/User dashboards)
-- [ ] Docker containerization with docker-compose
-- [ ] Monitoring with Spring Actuator and Prometheus
-- [ ] GraphQL API support
-- [ ] Rate limiting and API throttling
-- [ ] Advanced analytics and reporting
-- [ ] Notification system (Email/SMS)
-- [ ] Seat selection UI integration
-- [ ] Multi-language support
-
-### 🐛 Bug Fixes & Improvements
-- [ ] Optimize Redis cache invalidation
-- [ ] Improve error handling and custom exceptions
-- [ ] Add database migrations with Flyway/Liquibase
-- [ ] Implement request/response logging
-- [ ] Add API versioning strategy
-
-**Check the [Issues](https://github.com/yourusername/cinemahub/issues) tab for more details!**
-
----
 
 ## 🤝 Contributing
 
@@ -220,13 +185,6 @@ We love contributions! Whether you're a beginner or an experienced developer, th
 - Add tests for new features
 - Update documentation as needed
 - Be respectful and follow our [Code of Conduct](CODE_OF_CONDUCT.md)
-
-### 🎃 Hacktoberfest Guidelines
-
-- PRs must be meaningful and not spammy
-- Quality over quantity - focus on valuable contributions
-- All PRs will be reviewed before merging
-- Invalid/spam PRs will be marked as `invalid` or `spam`
 
 
 
@@ -254,17 +212,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 For questions or support, reach out at: amaanali.amaanali@gmail.com
-
 ---
-
 ## ⭐ Show Your Support
-
 If you find this project helpful, please consider giving it a ⭐️ on GitHub!
-
 ---
 
 ## 🙏 Acknowledgments
-
 - Spring Boot documentation
 - Redis community
 - All our amazing contributors
