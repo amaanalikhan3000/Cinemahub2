@@ -7,9 +7,6 @@
 
 A backend movie booking platform built with Java Spring Boot, featuring secure authentication, seat management, and real-time booking validation using Redis caching and JWT-based authentication.
 
-> 🎃 **Hacktoberfest 2025**: This project is participating in Hacktoberfest! We welcome contributions from developers of all skill levels.
-
----
 
 ## 🚀 Overview
 
