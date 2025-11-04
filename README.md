@@ -220,5 +220,4 @@ If you find this project helpful, please consider giving it a ⭐️ on GitHub!
 - Spring Boot documentation
 - Redis community
 - All our amazing contributors
-- Hacktoberfest organizers
 
