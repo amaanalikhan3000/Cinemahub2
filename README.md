@@ -167,7 +167,7 @@ We love contributions! Whether you're a beginner or an experienced developer, th
 
 ### 📋 How to Contribute
 
-1. **Check out open issues** - Look for issues labeled `good first issue`, `hacktoberfest`, or `help wanted`
+1. **Check out open issues** - Look for issues labeled
 2. **Comment on the issue** - Let us know you're working on it
 3. **Fork the repository** - Create your own copy
 4. **Create a branch** - `git checkout -b feature/your-feature-name`
@@ -178,7 +178,6 @@ We love contributions! Whether you're a beginner or an experienced developer, th
 9. **Create a Pull Request** - Submit your PR with a clear description
 
 ### 📝 Contribution Guidelines
-
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines
 - Follow the existing code style and conventions
 - Write meaningful commit messages
