@@ -187,13 +187,6 @@ We love contributions! Whether you're a beginner or an experienced developer, th
 
 
 
-## 💬 Community & Support
-
-- **Questions?** Open a [Discussion](https://github.com/yourusername/cinemahub/discussions)
-- **Bug Reports:** Use the [Issue Tracker](https://github.com/yourusername/cinemahub/issues)
-- **Feature Requests:** Open an issue with the `enhancement` label
-
----
 
 ## 📝 License
 
@@ -208,16 +201,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📧 Contact
 
-For questions or support, reach out at: amaanali.amaanali@gmail.com
----
 ## ⭐ Show Your Support
 If you find this project helpful, please consider giving it a ⭐️ on GitHub!
 ---
 
 ## 🙏 Acknowledgments
 - Spring Boot documentation
-- Redis community
 - All our amazing contributors
 
